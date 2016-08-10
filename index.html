@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+    <h1>Quiz</h1>
+</header>
+<main>
+    <name-required></name-required>
+    <welcome></welcome>
+    <quiz-questions></quiz-questions>
+    <end-questions></end-questions>
+    <winner></winner>
+</main>
+
+<template id="welcome-template">
+    <div v-show="show">
+        <p>Bem vindo {{name}}, vamos começar...</p>
+    </div>
+</template>
+
+<template id="name-required-template">
+    <div v-show="show">
+        <label>Name: <input type="text" placeholder="Digite seu nome" required></label>
+        <button @click="">OK</button>
+        <span>
+            ou
+            <button>VER O VENCERDOR</button>
+        </span>
+
+    </div>
+</template>
+
+<template id="quiz-questions-template">
+    <div v-show="show">
+        <ul v-for="question in questions">
+            <h4>{{question.question}}</h4>
+            <li v-for="option in question.options">
+                <input type="radio" name="{{question.order}}" value="{{option.option}}">
+                {{option.option}}
+            </li>
+        </ul>
+    </div>
+</template>
+
+<template id="end-questions-template">
+    <div>
+        <button>Acabei, por favor finalizar</button>
+    </div>
+</template>
+
+<template id="winner-template">
+    <div v-show="show">
+        <span> Parabéns {{fulano}} você foi o vencedor do quiz !!!!!</span>
+    </div>
+</template>
+
+<script src="vue.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
