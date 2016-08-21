@@ -19,16 +19,16 @@
 
 <template id="welcome-template">
     <div v-show="show">
-        <p>Bem vindo {{name}}, vamos começar...</p>
+        <p>Bem vindo <span class="welcome-name">{{name}}</span>, vamos começar...</p>
     </div>
 </template>
 
 <template id="name-required-template">
     <div v-show="show">
-        <label>Name: <input type="text" placeholder="Digite seu nome" required></label>
-        <button @click="">OK</button>
+        <label>Name: <input type="text" placeholder="Digite seu nome" v-model="name" required></label>
+        <button @click="onClick">OK</button>
         <span>
-            ou
+            or
             <button>VER O VENCERDOR</button>
         </span>
 
@@ -48,14 +48,15 @@
 </template>
 
 <template id="end-questions-template">
-    <div>
-        <button>Acabei, por favor finalizar</button>
+    <div v-show="show">
+        <button @click="teste">Acabei, por favor finalizar</button>
     </div>
 </template>
 
 <template id="winner-template">
     <div v-show="show">
-        <span> Parabéns {{fulano}} você foi o vencedor do quiz !!!!!</span>
+        <p></p> Parabéns {{fulano}} você foi o vencedor do quiz !!!!!</p>
+        <img src="tdfw.gif" title="Tun down for what">
     </div>
 </template>
 

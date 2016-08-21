@@ -1,22 +1,47 @@
+Vue.component('name-required', {
+
+   template: '#name-required-template',
+
+   methods: {
+      onClick: function () {
+         this.$dispatch('new-name', this.name);
+         this.show = false;
+         this.name = '';
+      }
+   },
+
+   data: function () {
+      return {
+         show: true,
+         name: ''
+      }
+   },
+   events: {
+      'come-to-life': function (e) {
+         this.show = true;
+      }
+   }
+});
+
 Vue.component('welcome', {
 
    template: '#welcome-template',
 
    data: function () {
       return {
-         name: 'teste',
-         show: true
+         name: '',
+         show: false
       }
-   }
-});
+   },
 
-Vue.component('name-required', {
-
-   template: '#name-required-template',
-
-   data: function () {
-      return {
-         show: true
+   events: {
+      'call-to-welcome': function (name) {
+         this.show = true;
+         this.name = name;
+         this.$dispatch('call-to-quiz', null);
+      },
+      'time-to-leave': function (e) {
+         this.show = false;
       }
    }
 });
@@ -27,7 +52,7 @@ Vue.component('quiz-questions', {
 
    data: function () {
       return {
-         show: true,
+         show: false,
 
          questions: [
             {
@@ -44,12 +69,41 @@ Vue.component('quiz-questions', {
             }
          ]
       }
+   },
+   events: {
+      'call-to-quiz-questions': function (e) {
+         this.show = true;
+         this.$dispatch('call-to-end-questions', null);
+      },
+      'time-to-leave': function () {
+         this.show = false;
+      }
    }
 });
 
 Vue.component('end-questions', {
 
-   template: '#end-questions-template'
+   template: '#end-questions-template',
+
+   data: function () {
+      return {
+         show: false
+      }
+   },
+   methods: {
+      teste: function () {
+         this.$dispatch('partial-kill', null);
+
+      }
+   },
+   events: {
+      'call-to-end-questions': function (e) {
+         this.show = true;
+      },
+      'time-to-leave': function (e) {
+         this.show = false;
+      }
+   }
 
 });
 
@@ -59,7 +113,7 @@ Vue.component('winner', {
 
    data: function () {
       return {
-         show: true
+         show: false
       }
    }
 });
@@ -68,6 +122,23 @@ new Vue({
    el: 'body',
     
    data: {
-      name: 'Ramon'
+      name: []
+   },
+
+   events: {
+      'new-name': function (name) {
+         this.$broadcast('call-to-welcome', name);
+         this.name.push(name);
+      },
+      'call-to-quiz': function (e) {
+         this.$broadcast('call-to-quiz-questions', null);
+      },
+      'call-to-end-questions': function (e) {
+         this.$broadcast('call-to-end-questions', null);
+      },
+      'partial-kill': function (e) {
+         this.$broadcast('time-to-leave', null);
+         this.$broadcast('come-to-life', null);
+      }
    }
 });
