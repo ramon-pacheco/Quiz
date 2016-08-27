@@ -1,66 +1,79 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quiz</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<header>
-    <h1>Quiz</h1>
-</header>
-<main>
-    <name-required></name-required>
-    <welcome></welcome>
-    <quiz-questions></quiz-questions>
-    <end-questions></end-questions>
-    <winner></winner>
-</main>
+    <head>
+        <meta charset="UTF-8">
+        <title>Quiz</title>
+        <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <h1>Quiz</h1>
+        </header>
 
-<template id="welcome-template">
-    <div v-show="show">
-        <p>Bem vindo <span class="welcome-name">{{name}}</span>, vamos começar...</p>
-    </div>
-</template>
+        <main>
+            <name-required></name-required>
+            <welcome></welcome>
+            <quiz-questions></quiz-questions>
+            <end-questions></end-questions>
+            <winner></winner>
+        </main>
 
-<template id="name-required-template">
-    <div v-show="show">
-        <label>Name: <input type="text" placeholder="Digite seu nome" v-model="name" required></label>
-        <button @click="onClick">OK</button>
-        <span>
-            or
-            <button>VER O VENCERDOR</button>
-        </span>
+        <template id="welcome-template">
+            <div v-show="show">
+                <p>Bem vindo <span class="welcome-name">{{name}}</span>, vamos começar...</p>
+            </div>
+        </template>
 
-    </div>
-</template>
+        <template id="name-required-template">
+            <div v-show="show">
+                <label>Name: <input type="text" placeholder="Digite seu nome" v-model="name" required></label>
+                <button @click="onClick">OK</button>
+                <span>
+                    or
+                    <button @click="showMeTheWiner">VER O VENCERDOR</button>
+                </span>
 
-<template id="quiz-questions-template">
-    <div v-show="show">
-        <ul v-for="question in questions">
-            <h4>{{question.question}}</h4>
-            <li v-for="option in question.options">
-                <input type="radio" name="{{question.order}}" value="{{option.option}}">
-                {{option.option}}
-            </li>
-        </ul>
-    </div>
-</template>
+            </div>
+        </template>
 
-<template id="end-questions-template">
-    <div v-show="show">
-        <button @click="teste">Acabei, por favor finalizar</button>
-    </div>
-</template>
+        <template id="quiz-questions-template">
+            <div v-if="show">
+                <ul v-for="quizQuestion in questions">
+                    <h4>{{quizQuestion.question}}</h4>
+                    <li v-for="questionOption in quizQuestion.options">
+                        <input type="radio"
+                               name="{{quizQuestion.order}}"
+                               value="{{questionOption.option}}"
+                               v-model="answers[quizQuestion.order]">
+                        {{questionOption.option}}
+                    </li>
+                </ul>
+                <input type="text" value="{{answers}}" />
+            </div>
+        </template>
 
-<template id="winner-template">
-    <div v-show="show">
-        <p></p> Parabéns {{fulano}} você foi o vencedor do quiz !!!!!</p>
-        <img src="tdfw.gif" title="Tun down for what">
-    </div>
-</template>
+        <template id="end-questions-template">
+            <div v-show="show">
+                <button @click="onClick">Acabei, por favor finalizar</button>
+            </div>
+        </template>
 
-<script src="vue.min.js"></script>
-<script src="script.js"></script>
-</body>
+        <template id="winner-template">
+            <div v-show="show">
+                <h2 class="winer-congratulations">
+                    Parabéns
+                    <span class="winer-name">{{winer | uppercase}}</span>
+                    você foi o vencedor do quiz com
+                    <span class="winer-name">{{score}}</span>
+                    pontos!!!!!</h2>
+                <img src="tdfw.gif" title="Tun down for what">
+            </div>
+        </template>
+
+    <script src="vue.min.js"></script>
+    <script src="script.js"></script>
+
+    </body>
 </html>

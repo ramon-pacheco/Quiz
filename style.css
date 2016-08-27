@@ -2,3 +2,12 @@
     color: red;
     font-weight: bold;
 }
+
+.winer-congratulations {
+    color: #0066ff;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.winer-name {
+    color: #ff8000;
+}
