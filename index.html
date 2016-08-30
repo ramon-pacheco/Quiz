@@ -4,7 +4,8 @@
     <head>
         <meta charset="UTF-8">
         <title>Quiz</title>
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="sweet-alert-dist/sweetalert.css">
         <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     </head>
     <body>
@@ -30,7 +31,7 @@
             <div v-show="show">
                 <label>Name: <input type="text" placeholder="Digite seu nome" v-model="name" required></label>
                 <button @click="onClick">OK</button>
-                <span>
+                <span v-show="atLeastOne">
                     or
                     <button @click="showMeTheWiner">VER O VENCERDOR</button>
                 </span>
@@ -63,17 +64,26 @@
         <template id="winner-template">
             <div v-show="show">
                 <h2 class="winer-congratulations">
-                    Parabéns
+                    Congratulations
                     <span class="winer-name">{{winer | uppercase}}</span>
-                    você foi o vencedor do quiz com
+                    you won the quiz with
                     <span class="winer-name">{{score}}</span>
-                    pontos!!!!!</h2>
-                <img src="tdfw.gif" title="Tun down for what">
+                    point(s)!!!!</h2>
+                <img src="img/gifs/tdfw.gif" title="Tun down for what">
             </div>
+            <div v-show="noScore">
+                <h2 class="no-winer-congratulations">
+                    What a shame, sadly no one won this time!
+                    Try harder next time.
+                    </h2>
+                <img src="img/gifs/choro.gif" title="cry">
+            </div>
+            <button v-if="show || noScore" @click="reset">Try again</button>
         </template>
 
-    <script src="vue.min.js"></script>
-    <script src="script.js"></script>
+    <script src="js/vue.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="sweet-alert-dist/sweetalert.min.js"></script>
 
     </body>
 </html>
