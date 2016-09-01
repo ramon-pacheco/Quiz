@@ -9,34 +9,42 @@ Vue.component('name-required', {
             this.name = '';
         },
         showMeTheWiner: function () {
-            var password = 1;
-            var passwordEntered = this.askForPassword;
-            if (passwordEntered() === password) {
+            if (!this.pwdOk) {
+                this.askForPassword();
+            } else {
                 this.$dispatch('showMeTheWiner', null);
             }
         },
         askForPassword: function () {
-            var x;
             var self = this;
-            swal({
-                title: "Type the password please",   
-                // text: "Write something interesting:",   
-                type: "input",   
-                showCancelButton: true,   
-                closeOnConfirm: false,   
-                animation: "slide-from-top",   
-                inputPlaceholder: "password" 
-            }, 
-            function(inputValue){   
-                if (inputValue === false) self.x = false;
 
-                if (inputValue === "") {     
-                    swal.showInputError("You need to write something!");     
-                    self.x = false   
+            swal({
+                title: "Authentication",
+                text: "Please, type the password below:",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "Password here"
+            }, function (inputValue) {
+                if (inputValue === false) return false;
+                if (inputValue === "") {
+                    swal.showInputError("You need to write something!");
+                    return false
                 }
-                self.x = inputValue;
+                self.validatePassword(inputValue);
             });
-            return x;
+        },
+        validatePassword: function (pwd) {
+            var password = '202cb962ac59075b964b07152d234b70';
+            if (md5(pwd) != password) {
+                swal.showInputError("Wrong Password.");
+                return false
+            } else {
+                swal.close();
+                this.pwdOk = true;
+                this.showMeTheWiner();
+            }
         }
     },
 
@@ -44,7 +52,8 @@ Vue.component('name-required', {
         return {
             show: true,
             name: '',
-            atLeastOne: false
+            atLeastOne: false,
+            pwdOk: false
         }
     },
     events: {
@@ -189,10 +198,10 @@ Vue.component('winner', {
         'showMeTheWiner': function (winer, score) {
             this.winer = winer;
             this.score = score;
-            
-            if(!this.score == 0){
+
+            if (!this.score == 0) {
                 this.show = true;
-            }else {
+            } else {
                 this.noScore = true;
             }
         },
@@ -218,7 +227,6 @@ new Vue({
     events: {
         'new-name': function (name) {
             this.$broadcast('call-to-welcome', name);
-            //this.name.push(name);
             this.name = name;
         },
         'call-to-quiz': function () {
