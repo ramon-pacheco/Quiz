@@ -4,7 +4,11 @@ Vue.component('name-required', {
 
     methods: {
         onClick: function () {
-            this.$dispatch('new-name', this.name);
+            if (this.name == "" || this.name == null) {
+                this.$dispatch('new-name', 'unknown');
+            } else {
+                this.$dispatch('new-name', this.name);
+            }
             this.show = false;
             this.name = '';
         },
@@ -86,7 +90,7 @@ Vue.component('welcome', {
     events: {
         'call-to-welcome': function (name) {
             this.show = true;
-            this.name = name == "" || name == null ? 'unknown' : name;
+            this.name = name;
             this.$dispatch('call-to-quiz', null);
         },
         'time-to-leave': function (e) {
@@ -144,7 +148,7 @@ Vue.component('quiz-questions', {
             this.show = false;
             this.analyzeTheAnswers();
             this.answers = [];
-            this.$dispatch('the-current-score', this.score);
+            this.$dispatch('the-player-has-finished', this.score);
             this.score = '';
         },
         'reset': function () {
@@ -165,7 +169,6 @@ Vue.component('end-questions', {
     methods: {
         onClick: function () {
             this.$dispatch('partial-kill', null);
-
         }
     },
     events: {
@@ -219,11 +222,19 @@ Vue.component('winner', {
 new Vue({
     el: 'body',
 
-    data: {
-        name: '',
-        score: 0
+    data: function () {
+        return {
+            name: '',
+            score: '',
+            players: [],
+            winersName: ''
+        }
     },
-
+    methods: {
+        compare: function (a, b) {
+            return b.score - a.score;
+        }
+    },
     events: {
         'new-name': function (name) {
             this.$broadcast('call-to-welcome', name);
@@ -240,18 +251,25 @@ new Vue({
             this.$broadcast('time-to-leave', null);
             this.$broadcast('come-to-life', null);
         },
-        'the-current-score': function (score) {
-
-            if (this.score < score) {
-                this.score = score;
-            }
+        'the-player-has-finished': function (score) {
+            this.players.push({name: this.name, score: score});
         },
         'showMeTheWiner': function () {
-            this.$broadcast('showMeTheWiner', this.name, this.score);
+
+            this.players.sort(this.compare);
+
+            for (var x = 0; x < this.players.length; x++) {
+                if (this.players[0].score == this.players[x].score) {
+                    this.winersName += this.players[x].name + ', ';
+                }
+            }
+
+            this.$broadcast('showMeTheWiner', this.winersName, this.players[0].score);
             this.$broadcast('winner-was-revealed', null);
         },
         'reset': function () {
             this.$broadcast('reset', null);
+            this.$data = this.$options.data();
         }
     }
 });
