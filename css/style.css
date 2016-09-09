@@ -1,18 +1,157 @@
+/*
+* All page
+*/
+body {
+    width: 90%;
+    margin: 0 auto;
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+/*
+* Main title
+*/
+.main-title {
+    font-size: 3em;
+    text-align: center;
+}
+
+/*
+* Templates style
+*/
 .welcome-name {
     color: red;
     font-weight: bold;
 }
 
-.winer-congratulations {
-    color: #0066ff;
-    font-family: 'Roboto Condensed', sans-serif;
+.welcome {
+    font-size: 1.8em;
 }
 
-.no-winer-congratulations {
-    color: #cdcdb1;
-    font-family: 'Roboto Condensed', sans-serif;
+.name-required {
+    text-align: center;
+}
+
+.name-required label {
+    font-size: 1.5em;
+}
+
+.name-required input {
+    font-size: 0.9em;
+}
+
+.result {
+    text-align: center;
+}
+
+.result h2 {
+    color: #0066ff;
+}
+
+.no-winer {
+    color: #cdcdb1 !important;
 }
 
 .winer-name {
     color: #ff8000;
+}
+
+.quiz-questions li {
+    list-style: none;
+}
+
+/*
+* Button style
+*/
+.btn {
+    background-color: #8CD4F5;
+    color: white;
+    border: none;
+    box-shadow: none;
+    font-size: 16px;
+    font-weight: bold;
+    -webkit-border-radius: 4px;
+    border-radius: 5px;
+    padding: 8px 25px;
+    /*margin: 26px 5px 0 5px;*/
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #7ecff4;
+}
+
+.btn-orange {
+    background-color: #FF4001;
+    color: white;
+    border: none;
+    box-shadow: none;
+    font-size: 16px;
+    font-weight: bold;
+    -webkit-border-radius: 4px;
+    border-radius: 5px;
+    padding: 8px 25px;
+    margin: 26px 5px 0 5px;
+    cursor: pointer;
+}
+
+.btn-orange:hover {
+    background-color: #FA3E00;
+}
+
+.margin-left {
+    display: inline-block;
+    margin-left: 36ex;
+    margin-top: 2em;
+}
+
+.margin-winer {
+    margin-left: 33.5ex;
+    margin-bottom: 2em;
+}
+
+/*
+* Table style
+*/
+.players-table {
+    font-family: "Lato", "sans-serif";
+    margin-bottom: 3em;
+    border-collapse: collapse;
+}
+
+.players-table caption {
+    font-weight: bold;
+}
+
+.players-table td {
+    text-align: center;
+    width: 10em;
+    padding: 1em;
+}
+
+.players-table th {
+    text-align: center;
+    padding: 1em;
+    background-color: #e8503a;
+    color: white;
+}
+
+.players-table tr {
+    height: 1em;
+}
+
+.players-table tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.players-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+/*
+* Wraper table style
+*/
+.players-table-container {
+    margin-top: 5ex;
+    margin-bottom: 3ex;
+    margin-left: 33.5ex;
 }

@@ -24,7 +24,7 @@ Vue.component('name-required', {
 
             swal({
                 title: "Authentication",
-                text: "Please, type the password below:",
+                text: "Please, type below the password:",
                 type: "input",
                 showCancelButton: true,
                 closeOnConfirm: false,
@@ -194,13 +194,15 @@ Vue.component('winner', {
             show: false,
             noScore: false,
             winer: '',
-            score: 0
+            score: 0,
+            players: []
         }
     },
     events: {
-        'showMeTheWiner': function (winer, score) {
+        'showMeTheWiner': function (winer, score, players) {
             this.winer = winer;
             this.score = score;
+            this.players = players;
 
             if (!this.score == 0) {
                 this.show = true;
@@ -264,7 +266,7 @@ new Vue({
                 }
             }
 
-            this.$broadcast('showMeTheWiner', this.winersName, this.players[0].score);
+            this.$broadcast('showMeTheWiner', this.winersName, this.players[0].score, this.players);
             this.$broadcast('winner-was-revealed', null);
         },
         'reset': function () {

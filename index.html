@@ -1,90 +1,111 @@
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Quiz</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="stylesheet" type="text/css" href="sweet-alert-dist/sweetalert.css">
-        <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
-    </head>
-    <body>
-        <header>
-            <h1>Quiz</h1>
-        </header>
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="sweet-alert-dist/sweetalert.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
+</head>
+<body>
+<header>
+    <h1 class="main-title">Quiz</h1>
+</header>
 
-        <main>
-            <name-required></name-required>
-            <welcome></welcome>
-            <quiz-questions></quiz-questions>
-            <end-questions></end-questions>
-            <winner></winner>
-        </main>
+<main>
+    <name-required></name-required>
+    <welcome></welcome>
+    <quiz-questions></quiz-questions>
+    <end-questions></end-questions>
+    <winner></winner>
+</main>
 
-        <template id="welcome-template">
-            <div v-show="show">
-                <p>Bem vindo <span class="welcome-name">{{name}}</span>, vamos começar...</p>
-            </div>
-        </template>
+<template id="welcome-template">
+    <div class="welcome" v-show="show">
+        <p>Bem vindo <span class="welcome-name">{{name}}</span>, vamos começar...</p>
+    </div>
+</template>
 
-        <template id="name-required-template">
-            <div v-show="show">
-                <label>Name: <input type="text" placeholder="Type your name please" v-model="name" required></label>
-                <button @click="onClick">OK</button>
+<template id="name-required-template">
+    <div class="name-required" v-show="show">
+        <label>Name: <input type="text" placeholder="Type your name please" v-model="name" required></label>
+        <button class="btn" @click="onClick">OK</button>
                 <span v-show="atLeastOne">
                     or
-                    <button @click="showMeTheWiner">VER O VENCERDOR</button>
+                    <button class="btn-orange" @click="showMeTheWiner">SHOW THE WINNER</button>
                 </span>
 
-            </div>
-        </template>
+    </div>
+</template>
 
-        <template id="quiz-questions-template">
-            <div v-if="show">
-                <ul v-for="quizQuestion in questions">
-                    <h4>{{quizQuestion.question}}</h4>
-                    <li v-for="questionOption in quizQuestion.options">
-                        <input type="radio"
-                               name="{{quizQuestion.order}}"
-                               value="{{questionOption.option}}"
-                               v-model="answers[quizQuestion.order]">
-                        {{questionOption.option}}
-                    </li>
-                </ul>
-                <input type="text" value="{{answers}}" />
-            </div>
-        </template>
+<template id="quiz-questions-template">
+    <div class="quiz-questions" v-if="show">
+        <ul v-for="quizQuestion in questions">
+            <h4>{{+quizQuestion.order + 1}}- {{quizQuestion.question}}</h4>
+            <li v-for="questionOption in quizQuestion.options">
+                <input type="radio"
+                       name="{{quizQuestion.order}}"
+                       value="{{questionOption.option}}"
+                       v-model="answers[quizQuestion.order]">
+                {{questionOption.option}}
+            </li>
+        </ul>
+    </div>
+</template>
 
-        <template id="end-questions-template">
-            <div v-show="show">
-                <button @click="onClick">Acabei, por favor finalizar</button>
-            </div>
-        </template>
+<template id="end-questions-template">
+    <div v-show="show">
+        <button class="btn" @click="onClick">Done, finish it please</button>
+    </div>
+</template>
 
-        <template id="winner-template">
-            <div v-show="show">
-                <h2 class="winer-congratulations">
-                    Congratulations
-                    <span class="winer-name">{{winer | uppercase}}</span>
-                    you won the quiz with
-                    <span class="winer-name">{{score}}</span>
-                    point(s)!!!!</h2>
-                <img src="img/gifs/tdfw.gif" title="Tun down for what">
-            </div>
-            <div v-show="noScore">
-                <h2 class="no-winer-congratulations">
-                    What a shame, sadly no one won this time!
-                    Try harder next time.
-                    </h2>
-                <img src="img/gifs/choro.gif" title="cry">
-            </div>
-            <button v-if="show || noScore" @click="reset">Try again</button>
-        </template>
+<template id="winner-template">
+    <div class="result" v-show="show">
+        <h2>
+            Congratulations
+            <span class="winer-name">{{winer | uppercase}}</span>
+            you won the quiz with
+            <span class="winer-name">{{score}}</span>
+            point(s)!!!!</h2>
+        <img src="img/gifs/tdfw.gif" title="Tun down for what">
+    </div>
+    <div class="result" v-show="noScore">
+        <h2 class="no-winer">
+            What a shame, sadly no one won this time!
+            Try harder next time.
+        </h2>
+        <img src="img/gifs/choro.gif" title="cry">
+    </div>
+    <div v-if="show" class="players-table-container">
+        <table class="players-table">
+            <caption>Players List</caption>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="player in players">
+                <td>{{player.name}}</td>
+                <td>{{player.score}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <button v-if="show || noScore"
+            class="btn"
+            :class="{'margin-left': noScore, 'margin-winer': !noScore}"
+            @click="reset">
+        Try again
+    </button>
+</template>
 
-    <script src="js/vue.min.js"></script>
-    <script src="js/script.js"></script>
-    <script src="sweet-alert-dist/sweetalert.min.js"></script>
-    <script src="js/md5.min.js"></script>
+<script src="js/vue.min.js"></script>
+<script src="js/script.js"></script>
+<script src="sweet-alert-dist/sweetalert.min.js"></script>
+<script src="js/md5.min.js"></script>
 
-    </body>
+</body>
 </html>
