@@ -221,6 +221,61 @@ Vue.component('winner', {
     }
 });
 
+Vue.component('countdown', {
+    template: '#countdown-template',
+
+    data: function () {
+        return {
+            minutes: 0,
+            seconds: 0,
+            show: false,
+            intervalId: 0
+        }
+    },
+    watch: {
+        'seconds': function () {
+            if (this.seconds == 60) {
+                this.setMinutes();
+                this.seconds = 0
+            }
+        },
+        'minutes': function () {
+            if (this.minutes == 1) {
+                this.timeIsOver();
+            }
+        }
+    },
+    // ready: function () {
+    //     setInterval(this.setSeconds, 1000);
+    // },
+    methods: {
+        setMinutes: function () {
+            this.minutes++
+        },
+        setSeconds: function () {
+            this.seconds++
+        },
+        startCounting: function () {
+            this.intervalId = setInterval(this.setSeconds, 1000);
+        },
+        timeIsOver: function () {
+            swal("Your time is over", "Thanks for playing");
+            this.$dispatch('partial-kill', null);
+        }
+    },
+    events: {
+        'call-to-quiz-questions': function () {
+            this.show = true;
+            this.startCounting();
+        },
+        'time-to-leave': function () {
+            this.show = false;
+            clearInterval(this.intervalId);
+            this.$data = this.$options.data();
+        }
+    }
+});
+
 new Vue({
     el: 'body',
 

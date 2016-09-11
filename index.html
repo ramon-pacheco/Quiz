@@ -17,6 +17,7 @@
     <name-required></name-required>
     <welcome></welcome>
     <quiz-questions></quiz-questions>
+    <countdown></countdown>
     <end-questions></end-questions>
     <winner></winner>
 </main>
@@ -51,6 +52,19 @@
                 {{questionOption.option}}
             </li>
         </ul>
+    </div>
+</template>
+
+<template id="countdown-template">
+    <div class="countdown" v-if="show">
+        <div class="block">
+            <p class="digit">{{ minutes }}</p>
+            <p class="text">Minutes</p>
+        </div>
+        <div class="block">
+            <p class="digit">{{ seconds }}</p>
+            <p class="text">Seconds</p>
+        </div>
     </div>
 </template>
 
