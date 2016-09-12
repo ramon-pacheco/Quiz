@@ -26,6 +26,7 @@ Vue.component('name-required', {
                 title: "Authentication",
                 text: "Please, type below the password:",
                 type: "input",
+                inputType: "password",
                 showCancelButton: true,
                 closeOnConfirm: false,
                 animation: "slide-from-top",
